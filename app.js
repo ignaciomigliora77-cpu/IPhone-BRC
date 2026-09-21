@@ -48,10 +48,12 @@ const ICONO_WA =
   '<svg viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
 
 const limpiaId = (v) => String(v || "").toLowerCase().replace(/\s+/g, " ").trim();
+// Búsqueda estricta: solo coincidencia por id numérico o nombre exacto.
+// Antes, el fallback por "includes" devolvía el primer producto (iPhone 16 Pro)
+// cuando el id venía vacío o inválido. Ahora eso muestra "Producto no encontrado".
 const productoPorId = (id) =>
   PRODUCTOS.find((p) => String(p.id) === String(id)) ||
   PRODUCTOS.find((p) => limpiaId(p.name) === limpiaId(id)) ||
-  PRODUCTOS.find((p) => limpiaId(p.name).includes(limpiaId(id))) ||
   null;
 
 /* ---------- Tarjeta de producto ---------- */
@@ -502,90 +504,339 @@ function pintarProductos() {
   document.addEventListener("precios:update", () => renderLista(cont, filtrar(), "No se encontraron productos."));
 }
 
-/* ---------- Detalle de producto ---------- */
+/* ---------- Detalle de producto (página completa) ---------- */
+const HL_SVGS = [
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.7 6 .3-4.7 3.7 1.6 5.8-4.8-3.5-4.8 3.5 1.6-5.8L4.1 9l6-.3z"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="12" x="3" y="7" rx="2"/><path d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/><path d="M12 12v3"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>'
+];
+const ICONO_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+const ICONO_MAP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+
+function specRows(p) {
+  const specs =
+    (p.specs && Object.keys(p.specs).length && p.specs) ||
+    SPECS_DEFAULT[p.category] ||
+    {};
+  return Object.entries(specs)
+    .map(([k, v]) => `<div class="spec"><dt>${k}</dt><dd>${v}</dd></div>`)
+    .join("");
+}
+
 function pintarProducto() {
   const id = new URLSearchParams(location.search).get("id");
   const p = productoPorId(id);
   const cont = $("[data-detalle]");
+  const crumb = $("[data-crumb]");
   if (!p || !cont) {
-    if (cont) cont.innerHTML = `<div class="vacio"><p>Producto no encontrado.</p><p class="vacio-sub">Volvé a <a class="link" href="productos.html">Productos</a>.</p></div>`;
+    if (crumb) crumb.innerHTML = "";
+    if (cont) cont.innerHTML = `<div class="vacio"><p>Producto no encontrado.</p><p class="vacio-sub">Volvé al <a class="link" href="productos.html">catálogo</a>.</p></div>`;
     return;
   }
-  const { actual, orig } = precioPara(p);
-  const wha = linkWA(mensajeConsulta(p));
   document.title = p.name + " | " + CONFIG.storeName;
 
-  cont.innerHTML = `
-    <div class="detalle-grid">
-      <div class="detalle-media">
-        <img src="${p.image}" alt="${p.name}" data-detalle-img>
-      </div>
-      <div class="detalle-info">
-        <span class="pc-cat">${p.category}</span>
-        <h1>${p.name}</h1>
-        <p class="detalle-desc">${p.description}</p>
-        <div class="detalle-pre">
-          ${orig !== null ? '<p class="pc-orig">' + PRECIOS.fmtARS(orig) + "</p>" : ""}
-          <p class="pc-ars detalle-ars${p.isOnSale ? " oferta" : ""}">${PRECIOS.fmtARS(actual)}</p>
-          <p class="pc-usd">USD ${p.price}</p>
-        </div>
-        ${p.colors && p.colors.length ? `
-        <div class="detalle-colores">
-          <span class="detalle-colores-label">Colores</span>
-          <div class="color-swatches" role="group" aria-label="Colores disponibles" data-swatches>
-            ${p.colors.map((c, i) => `
-              <button type="button" class="swatch${i === 0 ? " active" : ""}" style="--sw:${COLOR_SWATCHES[c] || "#999"}" aria-label="${c}" aria-pressed="${i === 0 ? "true" : "false"}" data-color="${c}" title="${c}"></button>`).join("")}
-          </div>
-        </div>` : ""}
-        <ul class="detalle-specs">
-          <li><span>Estado</span><strong>${condicionProducto(p)}</strong></li>
-          ${p.chip ? `<li><span>Chip</span><strong>${p.chip}</strong></li>` : ""}
-          ${p.storageCapacity ? `<li><span>Almacenamiento</span><strong>${p.storageCapacity}</strong></li>` : ""}
-          ${p.stock != null ? `<li><span>Stock</span><strong>${p.stock}</strong></li>` : ""}
-          ${p.hasAppleWarranty ? `<li><span>Garantía</span><strong>Garantía oficial de Apple</strong></li>` : ""}
-        </ul>
-        <div class="detalle-acc">
-          <a class="btn btn-dark" href="${wha}" target="_blank" rel="noopener noreferrer">${ICONO_WA}Consultar</a>
-          <a class="btn btn-outline" href="productos.html">Ver todos los productos</a>
-        </div>
-      </div>
-    </div>`;
+  if (crumb) {
+    crumb.innerHTML =
+      '<a class="link" href="productos.html?category=' + encodeURIComponent(p.category) + '">' + p.category + "</a> / " +
+      "<strong>" + p.name + "</strong>";
+  }
 
-  // selector de tonos: cambia la imagen real del detalle
-  const swatches = $("[data-swatches]", cont);
-  const detImg = $("[data-detalle-img]", cont);
-  if (swatches && detImg) {
-    const btns = $$("[data-color]", swatches);
-    btns.forEach((btn) =>
-      btn.addEventListener("click", () => {
-        btns.forEach((b) => {
-          const on = b === btn;
-          b.classList.toggle("active", on);
-          b.setAttribute("aria-pressed", on ? "true" : "false");
-        });
-        const c = btn.dataset.color;
-        if (p.imageGallery && p.imageGallery[c]) detImg.src = p.imageGallery[c];
-      })
+  const badges =
+    (p.isNew ? '<span class="badge badge-dark">Nuevo</span>' : "") +
+    (p.condition === "refurbished" ? '<span class="badge badge-dark">Seminuevo</span>' : "") +
+    (p.isOnSale ? '<span class="badge badge-red">' + p.discountPercentage + "% OFF</span>" : "");
+
+  const thumbs = p.imageGallery
+    ? [p.image, ...Object.values(p.imageGallery)].filter((s, i, a) => a.indexOf(s) === i)
+    : [];
+
+  let delta = 0;
+  const selStore = p.storageOptions && p.storageOptions.length ? p.storageOptions[0] : { label: p.storageCapacity || "", price: 0 };
+  let colorSel = p.colors && p.colors.length ? p.colors[0] : "";
+  const todosLosWA = [];
+
+  const relacionadoList = PRODUCTOS.filter((x) => x.category === p.category && x.id !== p.id).slice(0, 3);
+  const wrapRelacionados = relacionadoList.length
+    ? `<section class="pdet-section">
+        <div class="pdet-head"><span class="pdet-eyebrow">También podés querer</span><h2>Relacionados</h2></div>
+        <div data-pdet-rel></div>
+      </section>`
+    : "";
+
+  function pintarPrecio() {
+    const block = $("[data-precio]", cont);
+    if (!block) return;
+    const usd = p.price + delta;
+    const usdOrig = p.originalPrice ? p.originalPrice + delta : null;
+    const ars = PRECIOS.ars(usd);
+    const arsOrig = usdOrig !== null ? PRECIOS.ars(usdOrig) : null;
+    block.innerHTML =
+      (p.isOnSale && usdOrig !== null ? '<p class="pc-orig">' + PRECIOS.fmtARS(arsOrig) + "</p>" : "") +
+      '<p class="pc-ars detalle-ars' + (p.isOnSale ? " oferta" : "") + '">' + PRECIOS.fmtARS(ars) + "</p>" +
+      '<p class="pc-usd">USD ' + usd.toLocaleString("es-AR") + "</p>";
+  }
+
+  function mensajeCompra() {
+    return (
+      "Hola, me interesa el " + p.name +
+      (selStore ? " " + selStore.label : "") +
+      (colorSel ? " color " + colorSel : "") +
+      ". ¿Me pasás disponibilidad y precio? Vi el anuncio en " + CONFIG.storeName + "."
     );
   }
 
-  mountCanje($("[data-canje-product]"), { variant: "product", product: p });
-  document.addEventListener("precios:update", () => {
-    pricingInDetalle(p);
-  });
-}
-
-function pricingInDetalle(p) {
-  const { actual, orig } = precioPara(p);
-  const cont = $("[data-detalle]");
-  if (!cont) return;
-  const pre = $(".detalle-pre", cont);
-  if (pre) {
-    pre.innerHTML =
-      (orig !== null ? '<p class="pc-orig">' + PRECIOS.fmtARS(orig) + "</p>" : "") +
-      '<p class="pc-ars detalle-ars' + (p.isOnSale ? " oferta" : "") + '">' + PRECIOS.fmtARS(actual) + "</p>" +
-      '<p class="pc-usd">USD ' + p.price + "</p>";
+  function actualizarWA() {
+    const href = linkWA(mensajeCompra());
+    todosLosWA.forEach((a) => (a.href = href));
   }
+
+  function aplicarColor(c) {
+    colorSel = c;
+    if (p.imageGallery && p.imageGallery[c]) {
+      const img = $("[data-detalle-img]", cont);
+      if (img) img.src = p.imageGallery[c];
+    }
+    const lbl = $("[data-pcolor-label]", cont);
+    if (lbl) lbl.textContent = c || "—";
+    $$("[data-color]", cont).forEach((b) => {
+      const on = b.getAttribute("data-color") === c;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    $$("[data-finish-color]", cont).forEach((b) =>
+      b.classList.toggle("active", b.getAttribute("data-finish-color") === c)
+    );
+    if (p.imageGallery) {
+      $$("[data-thumb]", cont).forEach((b) => {
+        const src = b.getAttribute("data-thumb");
+        b.classList.toggle("active", !!p.imageGallery[c] && p.imageGallery[c] === src);
+      });
+    }
+    actualizarWA();
+  }
+
+  cont.innerHTML = `
+    <article class="pdet">
+
+      <div class="pdet-hero">
+        <div class="pdet-media">
+          ${thumbs.length
+            ? '<div class="pdet-thumbs" role="group" aria-label="Imágenes">' +
+              thumbs.map((s, i) => `<button type="button" class="pdet-thumb${i === 0 ? " active" : ""}" data-thumb="${s}" aria-label="Ver imagen ${i + 1}"><img src="${s}" alt=""></button>`).join("") +
+              "</div>"
+            : ""}
+          <div class="pdet-imgbox">
+            <img src="${p.image}" alt="${p.name}" data-detalle-img>
+          </div>
+        </div>
+
+        <div class="pdet-info">
+          <span class="pdet-badgecat">${p.category}</span>
+          <div class="pdet-name">
+            <h1>${p.name}</h1>
+            ${badges ? '<div class="pdet-badges">' + badges + "</div>" : ""}
+          </div>
+          <p class="detalle-desc">${p.description}</p>
+          <div class="pdet-precio" data-precio></div>
+
+          ${p.colors && p.colors.length ? `
+          <div class="pdet-colores">
+            <span class="pdet-label">Colores: <b data-pcolor-label>${p.colors[0]}</b></span>
+            <div class="color-swatches" role="group" aria-label="Colores disponibles" data-swatches>
+              ${p.colors.map((c, i) => `
+                <button type="button" class="swatch${i === 0 ? " active" : ""}" style="--sw:${COLOR_SWATCHES[c] || "#999"}" aria-label="${c}" aria-pressed="${i === 0 ? "true" : "false"}" data-color="${c}" title="${c}"></button>`).join("")}
+            </div>
+          </div>` : ""}
+
+          ${p.storageOptions && p.storageOptions.length ? `
+          <div class="pdet-store">
+            <span class="pdet-label">Almacenamiento</span>
+            <div class="pdet-optstore" data-stores>
+              ${p.storageOptions.map((s, i) => `
+                <button type="button" class="store-opt${i === 0 ? " active" : ""}" data-store="${s.price}" data-store-label="${s.label}">${s.label}</button>`).join("")}
+            </div>
+          </div>` : ""}
+
+          <div class="pdet-trust">
+            <span>${ICONO_CHECK}100% original</span>
+            <span>${ICONO_CHECK}Garantía oficial</span>
+            <span>${ICONO_CHECK}Envíos al país</span>
+            <span>${ICONO_CHECK}Aceptamos USDT</span>
+          </div>
+
+          <div class="pdet-actions">
+            <a class="btn btn-dark" href="#" target="_blank" rel="noopener noreferrer" data-compra-wa>${ICONO_WA}<span>Consultar por WhatsApp</span></a>
+            <a class="btn btn-outline" href="#plan-canje">Plan Canje</a>
+          </div>
+        </div>
+      </div>
+
+      <section class="pdet-section">
+        <div class="pdet-head">
+          <span class="pdet-eyebrow">Lo más destacado</span>
+          <h2>${p.name}: qué lo hace irresistible</h2>
+        </div>
+        <div class="pdet-features">
+          ${(p.highlights || []).map((h, i) => `
+            <div class="pdet-feat">
+              <span class="pdet-feat-ic">${HL_SVGS[i % HL_SVGS.length]}</span>
+              <span><b>${h}</b></span>
+            </div>`).join("")}
+        </div>
+      </section>
+
+      <section class="pdet-section" id="plan-canje">
+        <div class="pdet-head">
+          <span class="pdet-eyebrow">Plan Canje BRC</span>
+          <h2>Entregá tu usado y renová</h2>
+          <p>Calculá el valor de tu celular actual y pagá solo la diferencia por este equipo. Sin trámites, en el momento.</p>
+        </div>
+        <div class="pdet-tool" data-canje-product></div>
+      </section>
+
+      <section class="pdet-section">
+        <div class="pdet-head">
+          <span class="pdet-eyebrow">Ficha técnica</span>
+          <h2>Especificaciones completas</h2>
+        </div>
+        <div class="pdet-specs">${specRows(p)}</div>
+      </section>
+
+      ${p.inTheBox && p.inTheBox.length ? `
+      <section class="pdet-section">
+        <div class="pdet-head"><span class="pdet-eyebrow">En la caja</span><h2>Qué incluye</h2></div>
+        <ul class="pdet-box">${p.inTheBox.map((x) => `<li>${ICONO_CHECK}<span>${x}</span></li>`).join("")}</ul>
+      </section>` : ""}
+
+      ${p.colors && p.colors.length ? `
+      <section class="pdet-section">
+        <div class="pdet-head">
+          <span class="pdet-eyebrow">Colores</span>
+          <h2>Elegí el tuyo</h2>
+          <p>Tocá un color para verlo aplicado en el equipo.</p>
+        </div>
+        <div class="pdet-finish">
+          ${p.colors.map((c, i) => `
+            <button type="button" class="finish-card${i === 0 ? " active" : ""}" data-finish-color="${c}" aria-label="${c}">
+              <span class="finish-swatch" style="--sw:${COLOR_SWATCHES[c] || "#999"}"></span>
+              <b>${c}</b>
+            </button>`).join("")}
+        </div>
+      </section>` : ""}
+
+      <section class="pdet-section">
+        <div class="pdet-head">
+          <span class="pdet-eyebrow">Nuestra tienda</span>
+          <h2>Pasá a probarlo</h2>
+        </div>
+        <div class="ubica-card">
+          <span class="ubica-ic">${ICONO_MAP}</span>
+          <div>
+            <b>${direccionCompleta()}</b>
+            <p>${CONFIG.address.city}, Río Negro. Coordiná tu visita por WhatsApp o pasa directo al local.</p>
+          </div>
+          <div class="ubica-links">
+            <a class="btn btn-outline" href="${mapsUrl()}" target="_blank" rel="noopener noreferrer">Cómo llegar</a>
+            <a class="btn btn-dark" href="${linkWA('Hola, quiero pasar a ver el ' + p.name + ' en ' + direccionCompleta())}" target="_blank" rel="noopener noreferrer">${ICONO_WA}Escribinos</a>
+          </div>
+        </div>
+      </section>
+
+      ${wrapRelacionados}
+
+      <section class="pdet-section">
+        <div class="pdet-head">
+          <span class="pdet-eyebrow">Consultas</span>
+          <h2>Preguntas frecuentes</h2>
+        </div>
+        <div class="pdet-faq">
+          <details open>
+            <summary>¿Tiene garantía?</summary>
+            <p>${p.hasAppleWarranty ? "Sí, incluye la garantía oficial de Apple." : "Sí, los seminuevos incluyen garantía en tienda."}</p>
+          </details>
+          <details>
+            <summary>¿Cómo funciona el Plan Canje?</summary>
+            <p>Traé tu iPhone usado, estimamos su valor en el día y pagás solo la diferencia por un equipo nuevo o seminuevo.</p>
+          </details>
+          <details>
+            <summary>¿Hacen envíos?</summary>
+            <p>Sí, enviamos a todo el país con seguimiento y seguro. Coordinalo por WhatsApp.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="pdet-cta">
+        <h2>¿Querés saber más de este equipo?</h2>
+        <p>Escribinos y coordinamos tu compra, tu canje o una visita al local.</p>
+        <div class="pdet-cta-actions">
+          <a class="btn btn-dark" href="#" target="_blank" rel="noopener noreferrer" data-compra-wa>${ICONO_WA}Consultar por WhatsApp</a>
+          <a class="btn btn-outline" href="productos.html">Ver más productos</a>
+        </div>
+      </section>
+    </article>`;
+
+  // Precio inicial
+  pintarPrecio();
+
+  // Enlace de compra compartido (dos ubicaciones)
+  $$("[data-compra-wa]", cont).forEach((a) => todosLosWA.push(a));
+  actualizarWA();
+
+  // Swatches: cambia el color / imagen del hero (se mantiene la animación)
+  $$("[data-color]", cont).forEach((btn) =>
+    btn.addEventListener("click", () => aplicarColor(btn.getAttribute("data-color")))
+  );
+
+  // Miniaturas de la galería
+  $$("[data-thumb]", cont).forEach((btn) =>
+    btn.addEventListener("click", () => {
+      const src = btn.getAttribute("data-thumb");
+      const img = $("[data-detalle-img]", cont);
+      if (img) img.src = src;
+      if (p.imageGallery) {
+        const c = Object.keys(p.imageGallery).find((k) => p.imageGallery[k] === src);
+        if (c) aplicarColor(c);
+        else {
+          $$("[data-thumb]", cont).forEach((b) => b.classList.toggle("active", b === btn));
+        }
+      }
+    })
+  );
+
+  // Cards de color en el bloque "Elegí el tuyo"
+  $$("[data-finish-color]", cont).forEach((btn) =>
+    btn.addEventListener("click", () => aplicarColor(btn.getAttribute("data-finish-color")))
+  );
+
+  // Selector de almacenamiento: ajusta precio y mensaje
+  const btnsStore = $$(".store-opt", cont);
+  btnsStore.forEach((b) =>
+    b.addEventListener("click", () => {
+      btnsStore.forEach((s) => s.classList.toggle("active", s === b));
+      delta = Number(b.getAttribute("data-store")) || 0;
+      const sSel = (p.storageOptions || []).find((s) => String(s.price) === String(b.getAttribute("data-store")));
+      if (sSel) {
+        selStore.label = sSel.label;
+        selStore.price = sSel.price;
+      }
+      pintarPrecio();
+      actualizarWA();
+    })
+  );
+
+  // Plan Canje de este producto
+  const canjeEl = $("[data-canje-product]", cont);
+  if (canjeEl) mountCanje(canjeEl, { variant: "product", product: p });
+
+  // Relacionados
+  const relEl = $("[data-pdet-rel]", cont);
+  if (relEl) renderLista(relEl, relacionadoList, "No hay productos relacionados.", true);
+
+  // Refrescar precios cuando se actualiza la cotización del dólar
+  document.addEventListener("precios:update", () => pintarPrecio());
 }
 
 /* ---------- Arranque ---------- */
