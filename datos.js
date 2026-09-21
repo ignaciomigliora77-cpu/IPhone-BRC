@@ -20,11 +20,9 @@ function _tradeInRow(name, caps, base, step) {
 function buildTradeInModels() {
   return [
     _tradeInRow("12",             ["64GB", "128GB", "256GB", "512GB"], 160, 20),
-    _tradeInRow("12 mini",        ["64GB", "128GB", "256GB"],         140, 20),
     _tradeInRow("12 Pro",         ["64GB", "128GB", "256GB", "512GB"], 180, 20),
     _tradeInRow("12 Pro Max",     ["128GB", "256GB", "512GB"],         220, 25),
     _tradeInRow("13",             ["128GB", "256GB", "512GB"],         210, 25),
-    _tradeInRow("13 mini",        ["128GB", "256GB", "512GB"],         185, 25),
     _tradeInRow("13 Pro",         ["128GB", "256GB", "512GB"],         260, 40),
     _tradeInRow("13 Pro Max",     ["128GB", "256GB", "512GB"],         300, 40),
     _tradeInRow("14",             ["128GB", "256GB", "512GB"],         250, 30),
@@ -54,7 +52,8 @@ const CONFIG = {
     local: "Local 11",
     floor: "2º piso",
     city: "San Carlos de Bariloche",
-    mapsQuery: "Galería Paseo de la Catedral Bariloche"
+    mapsQuery: "Emporio Tecnología",
+    mapsPlaceId: "0x961a7b0d7179b625:0x8cbf6a724c947a34"
   },
   // Cotización respaldo (se intenta tomar la real en vivo desde bluelytics.com.ar)
   dollarRateOfficial: 1200,
@@ -64,7 +63,7 @@ const CONFIG = {
   categories: ["iPhones", "MacBook", "iPad", "AirPods"],
   tradeIn: {
     enabled: true,
-    batteryConditions: ["90+", "-90%"],
+    batteryConditions: ["+90%", "75-90%", "Menos del 75%", "No lo sé"],
     capacities: [],
     models: buildTradeInModels()
   }
@@ -82,7 +81,8 @@ function direccionCompleta() {
 }
 
 function mapsUrl() {
-  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.address.mapsQuery);
+  const a = CONFIG.address;
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(a.mapsQuery) + "&query_place_id=" + a.mapsPlaceId;
 }
 
 const IMG = {
@@ -558,7 +558,7 @@ const PRODUCTOS = [
       { label: "128 GB", price: 30 }
     ],
     highlights: [
-      "Revisado y certificado por nuestro taller.",
+      "Revisado en nuestro taller.",
       "Diseño con bordes planos, al estilo actual.",
       "Chip A14 Bionic con gran fluidez.",
       "Compatibilidad total con apps y accesorios.",
@@ -579,10 +579,10 @@ const PRODUCTOS = [
       "Dimensiones": "146,7 × 71,5 × 7,40 mm",
       "Material": "Aluminio · Ceramic Shield · IP68",
       "Conectividad": "5G · Wi-Fi 6 · Bluetooth 5.0 · NFC",
-      "Garantía": "Garantía en tienda (seminuevo certificado)"
+      "Garantía": "Garantía en tienda"
     },
     inTheBox: [
-      "iPhone 12 seminuevo (certificado)",
+      "iPhone 12 seminuevo",
       "Cable de carga USB-C a Lightning",
       "Documentación"
     ]
@@ -646,10 +646,10 @@ const PRODUCTOS = [
     stock: 3,
     isNew: true,
     chip: "M5",
-    colors: ["Midnight", "Sky Blue", "Starlight", "Silver"],
+colors: ["Midnight", "Sky Blue", "Starlight", "Silver"],
     storageCapacity: "512GB",
     hasAppleWarranty: true,
-    image: IMG.macbook + "/macbook-air.png",
+    image: IMG.macbook + "/macbook-air-15.png",
     storageOptions: [
       { label: "512 GB", price: 0 },
       { label: "1 TB", price: 250 }
@@ -744,7 +744,7 @@ const PRODUCTOS = [
     colors: ["Space Black", "Silver"],
     storageCapacity: "1TB",
     hasAppleWarranty: true,
-    image: IMG.macbook + "/macbook-pro-14.png",
+    image: IMG.macbook + "/macbook-pro-16.png",
     storageOptions: [
       { label: "1 TB", price: 0 },
       { label: "2 TB", price: 500 },
@@ -1066,7 +1066,7 @@ const PRODUCTOS = [
   {
     id: 19,
     name: "iPhone 13",
-    description: "Seminuevo certificado. Chip A15 Bionic, cámaras de 12 Mpx y pantalla OLED. Revisado, garantizado y listo para usar.",
+    description: "Seminuevo revisado. Chip A15 Bionic, cámaras de 12 Mpx y pantalla OLED. Revisado, garantizado y listo para usar.",
     price: 369,
     category: "iPhones",
     stock: 5,
@@ -1089,7 +1089,7 @@ const PRODUCTOS = [
       { label: "256 GB", price: 60 }
     ],
     highlights: [
-      "Revisado y certificado por nuestro taller.",
+      "Revisado en nuestro taller.",
       "Chip A15 Bionic ultrarrápido.",
       "Cámaras de 12 Mpx con modo Noche.",
       "OLED Super Retina XDR superbrillante.",
@@ -1108,10 +1108,10 @@ const PRODUCTOS = [
       "Peso": "174 g",
       "Material": "Aluminio · Ceramic Shield · IP68",
       "Conectividad": "5G · Wi-Fi 6 · Bluetooth 5.0 · NFC",
-      "Garantía": "Garantía en tienda (seminuevo certificado)"
+      "Garantía": "Garantía en tienda"
     },
     inTheBox: [
-      "iPhone 13 seminuevo (certificado)",
+      "iPhone 13 seminuevo",
       "Cable de carga USB-C a Lightning",
       "Documentación"
     ]
@@ -1119,7 +1119,7 @@ const PRODUCTOS = [
   {
     id: 20,
     name: "iPhone 14",
-    description: "Seminuevo certificado. Chip A15 Bionic, 5G, cámaras de 12 Mpx y gran duración de batería.",
+    description: "Seminuevo revisado. Chip A15 Bionic, 5G, cámaras de 12 Mpx y gran duración de batería.",
     price: 449,
     category: "iPhones",
     stock: 4,
@@ -1138,7 +1138,7 @@ const PRODUCTOS = [
       { label: "256 GB", price: 60 }
     ],
     highlights: [
-      "Revisado y certificado por nuestro taller.",
+      "Revisado en nuestro taller.",
       "Chip A15 Bionic con gran rendimiento.",
       "Cámaras de 12 Mpx que rinden de día y de noche.",
       "5G ultrarrápido.",
@@ -1158,10 +1158,10 @@ const PRODUCTOS = [
       "Peso": "172 g",
       "Material": "Aluminio · Ceramic Shield · IP68",
       "Conectividad": "5G · Wi-Fi 6 · Bluetooth 5.3 · NFC",
-      "Garantía": "Garantía en tienda (seminuevo certificado)"
+      "Garantía": "Garantía en tienda"
     },
     inTheBox: [
-      "iPhone 14 seminuevo (certificado)",
+      "iPhone 14 seminuevo",
       "Cable de carga USB-C a Lightning",
       "Documentación"
     ]
@@ -1169,7 +1169,7 @@ const PRODUCTOS = [
   {
     id: 21,
     name: "iPhone 12 Pro Max",
-    description: "Seminuevo certificado. Cámara Pro, 5G y pantalla Super Retina XDR de 6,7\". El Pro Max que abrió la era de los bordes planos.",
+    description: "Seminuevo revisado. Cámara Pro, 5G y pantalla Super Retina XDR de 6,7\". El Pro Max que abrió la era de los bordes planos.",
     price: 399,
     category: "iPhones",
     stock: 3,
@@ -1190,7 +1190,7 @@ const PRODUCTOS = [
       { label: "512 GB", price: 110 }
     ],
     highlights: [
-      "Revisado y certificado por nuestro taller.",
+      "Revisado en nuestro taller.",
       "Pantalla Super Retina XDR de 6,7\".",
       "Cámara Pro triple con LiDAR.",
       "Chip A14 Bionic con gran fluidez.",
@@ -1209,10 +1209,10 @@ const PRODUCTOS = [
       "Peso": "228 g",
       "Material": "Acero inoxidable · Ceramic Shield · IP68",
       "Conectividad": "5G · Wi-Fi 6 · Bluetooth 5.0 · NFC",
-      "Garantía": "Garantía en tienda (seminuevo certificado)"
+      "Garantía": "Garantía en tienda"
     },
     inTheBox: [
-      "iPhone 12 Pro Max seminuevo (certificado)",
+      "iPhone 12 Pro Max seminuevo",
       "Cable de carga USB-C a Lightning",
       "Documentación"
     ]
@@ -1220,7 +1220,7 @@ const PRODUCTOS = [
   {
     id: 22,
     name: "iPhone 15",
-    description: "Seminuevo certificado. Dynamic Island, cámara de 48 Mpx y chip A16 Bionic.",
+    description: "Seminuevo revisado. Dynamic Island, cámara de 48 Mpx y chip A16 Bionic.",
     price: 549,
     category: "iPhones",
     stock: 4,
@@ -1241,7 +1241,7 @@ const PRODUCTOS = [
       { label: "256 GB", price: 70 }
     ],
     highlights: [
-      "Revisado y certificado por nuestro taller.",
+      "Revisado en nuestro taller.",
       "Dynamic Island en su máximo esplendor.",
       "Cámara Fusion de 48 Mpx con zoom óptico 2x.",
       "Chip A16 Bionic.",
@@ -1260,10 +1260,10 @@ const PRODUCTOS = [
       "Peso": "171 g",
       "Material": "Aluminio · Ceramic Shield · IP68",
       "Conectividad": "5G · Wi-Fi 6 · Bluetooth 5.3 · NFC",
-      "Garantía": "Garantía en tienda (seminuevo certificado)"
+      "Garantía": "Garantía en tienda"
     },
     inTheBox: [
-      "iPhone 15 seminuevo (certificado)",
+      "iPhone 15 seminuevo",
       "Cable de carga USB-C (1 m)",
       "Documentación"
     ]
@@ -1271,7 +1271,7 @@ const PRODUCTOS = [
   {
     id: 23,
     name: "MacBook Air 13\" (M5)",
-    description: "Seminuevo certificado. Chip M5, Liquid Retina de 13,6\" y 18 horas de batería. Como nuevo, probando menos.",
+    description: "Seminuevo revisado. Chip M5, Liquid Retina de 13,6\" y 18 horas de batería. Como nuevo, probando menos.",
     price: 799,
     originalPrice: 999,
     discountPercentage: 20,
@@ -1280,16 +1280,16 @@ const PRODUCTOS = [
     isOnSale: true,
     condition: "refurbished",
     chip: "M5",
-    colors: ["Midnight", "Starlight", "Silver"],
+colors: ["Midnight", "Starlight", "Silver"],
     storageCapacity: "512GB",
     hasAppleWarranty: true,
     image: IMG.macbook + "/mba13-midnight.png",
     storageOptions: [
       { label: "512 GB", price: 0 },
-      { label: "1 TB", price: 200 }
+      { label: "1 TB", price: 250 }
     ],
     highlights: [
-      "Revisado y certificado por nuestro taller.",
+      "Revisado en nuestro taller.",
       "Chip M5 con Neural Engine acelerado.",
       "Hasta 18 horas de batería en una carga.",
       "Diseño sin ventilador, silencioso.",
@@ -1307,10 +1307,10 @@ const PRODUCTOS = [
       "Puertos": "MagSafe 3 · 2 × Thunderbolt 4 · jack 3,5 mm",
       "Cámara": "12 Mpx FaceTime HD con Centro de Encuadre",
       "Otros": "Touch ID · teclado retroiluminado · sin ventilador",
-      "Garantía": "Garantía en tienda (seminuevo certificado)"
+      "Garantía": "Garantía en tienda"
     },
     inTheBox: [
-      "MacBook Air seminuevo (certificado)",
+      "MacBook Air seminuevo",
       "Cable de carga MagSafe (2 m)",
       "Documentación"
     ]

@@ -111,14 +111,12 @@ a.brand:hover .apple { transform: scale(1.06) rotate(2deg); }
 .brand img:hover { transform: scale(1.05); }
 .brand span { font-size: 1.25rem; font-weight: 700; color: var(--gray-800); }
 .nav-links { display: none; align-items: center; gap: 2rem; }
-.nav-links a { position: relative; color: var(--gray-600); transition: color .15s; }
-.nav-links a:hover, .nav-links a.active { color: var(--gray-900); }
-.nav-links a.active { font-weight: 500; }
-.nav-link::after {
-  content: ""; background-color: currentColor; width: 0; height: 2px;
-  transition: width .3s; position: absolute; bottom: -4px; left: 0;
+.nav-links a {
+  position: relative; padding: .45rem .9rem; border-radius: 9999px;
+  color: var(--gray-600); transition: background .2s ease, color .2s ease;
 }
-.nav-links a:hover::after, .nav-link.active::after { width: 100%; }
+.nav-links a:hover { background: rgba(0,0,0,.06); color: var(--gray-900); }
+.nav-links a.active { background: rgba(0,0,0,.08); color: var(--gray-900); font-weight: 600; }
 @media (min-width: 768px) {
   .nav-links { display: flex; }
 }
@@ -162,8 +160,11 @@ a.brand:hover .apple { transform: scale(1.06) rotate(2deg); }
   padding: 1rem; z-index: 60;
 }
 .nav-mobile.open { display: block; animation: popIn .18s ease-out; }
-.nav-mobile a { display: block; padding: .5rem 0; color: var(--gray-600); }
-.nav-mobile a:hover { color: var(--gray-900); }
+.nav-mobile a {
+  display: block; padding: .55rem .7rem; border-radius: .75rem;
+  color: var(--gray-600); transition: background .15s ease, color .15s ease;
+}
+.nav-mobile a:hover { background: var(--gray-100); color: var(--gray-900); }
 .nav-mobile .m-search { position: relative; margin-bottom: .75rem; }
 .nav-mobile .m-search .search-ic {
   position: absolute; left: .75rem; top: 50%; transform: translateY(-50%);
@@ -464,6 +465,22 @@ a.brand:hover .apple { transform: scale(1.06) rotate(2deg); }
   border: 1px solid var(--gray-200); border-radius: .75rem; background: #fff; cursor: pointer; outline: none;
 }
 .tic2-fields select:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,.15); }
+
+.tic2-batrow { display: grid; gap: .55rem; }
+.tic2-batrow input {
+  height: 2.5rem; padding: 0 .9rem; font-size: .875rem; color: var(--gray-800);
+  border: 1px solid var(--gray-200); border-radius: .75rem; background: #fff; outline: none;
+  font-family: inherit;
+}
+.tic2-batrow input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,.15); }
+.tic2-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.tic2-chip {
+  border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600);
+  border-radius: 9999px; padding: .3rem .75rem; font-size: .78rem; font-weight: 500;
+  font-family: inherit; cursor: pointer; transition: border-color .15s ease, color .15s ease, transform .1s ease;
+}
+.tic2-chip:hover { border-color: #2563eb; color: #2563eb; }
+.tic2-chip:active { transform: scale(.96); }
 
 .tic2-result { position: relative; display: grid; gap: .75rem; }
 @media (min-width: 640px) { .tic2-result { grid-template-columns: 1fr 1fr; } }
@@ -879,3 +896,18 @@ a.brand:hover .apple { transform: scale(1.06) rotate(2deg); }
 .btn-dark { background: var(--ink); color: #fff; }
 .btn-dark:hover { background: #2a2d35; }
 .page-title::after { content: ""; background-color: var(--accent); width: 40px; height: 3px; border-radius: 2px; position: absolute; bottom: 0; left: 0; }
+
+/* ---------- Píldora deslizante de pestañas ---------- */
+.tabs { position: relative; isolation: isolate; }
+.tabs::before {
+  content: ""; position: absolute; top: 0; left: 0; z-index: 0;
+  width: var(--tw, 0px); height: 2.25rem; border-radius: 9999px;
+  background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08);
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+  transition: transform .3s cubic-bezier(.4, 0, .2, 1), width .3s cubic-bezier(.4, 0, .2, 1);
+}
+.tab { position: relative; z-index: 1; }
+.tab.active { background: transparent; box-shadow: none; }
+
+/* Botón "Cómo llegar" y contact: sin subrayados forzados */
+.btn svg { flex-shrink: 0; }

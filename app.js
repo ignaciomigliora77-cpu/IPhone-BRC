@@ -94,7 +94,7 @@ function tarjetaProducto(p) {
         </div>
         <div class="pc-actions">
           <a class="btn btn-dark" href="${wha}" target="_blank" rel="noopener noreferrer">${ICONO_WA}<span class="pc-wa-txt">Consultar</span></a>
-          <a class="btn btn-outline" href="producto.html?id=${p.id}"><span class="det-txt">Ver detalles</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ic"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          <a class="btn btn-outline" href="producto?id=${p.id}"><span class="det-txt">Ver detalles</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ic"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
         </div>
       </div>
     </article>`;
@@ -110,7 +110,7 @@ function renderLista(cont, productos, vacioTexto, animar = false) {
         </div>
         <p>No encontramos productos</p>
         <p class="vacio-sub">${vacioTexto || "No se encontraron productos."} Probá con otra búsqueda o quitá algunos filtros.</p>
-        <a class="btn btn-outline vacio-cta" href="productos.html">Ver todo el catálogo</a>
+        <a class="btn btn-outline vacio-cta" href="productos">Ver todo el catálogo</a>
       </div>`;
     return;
   }
@@ -143,7 +143,7 @@ function iniciarBuscador() {
         lista
           .map(
             (p) => `
-            <a class="sr-item" href="producto.html?id=${p.id}">
+            <a class="sr-item" href="producto?id=${p.id}">
               <img src="${p.image}" alt="" width="32" height="32">
               <div><p class="sr-name">${p.name}</p><p class="sr-cat">${p.category}</p></div>
             </a>`
@@ -152,7 +152,7 @@ function iniciarBuscador() {
         `<div class="sr-more"><button type="button" data-sr-todo>Ver todos los resultados para "${q}"</button></div>`;
       res.classList.add("open");
       $("[data-sr-todo]", res).addEventListener("click", () => {
-        location.href = "productos.html?search=" + encodeURIComponent(q);
+        location.href = "productos?search=" + encodeURIComponent(q);
       });
     }
 
@@ -160,7 +160,7 @@ function iniciarBuscador() {
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         const q = input.value.trim();
-        if (q) location.href = "productos.html?search=" + encodeURIComponent(q);
+        if (q) location.href = "productos?search=" + encodeURIComponent(q);
       }
     });
 
@@ -217,12 +217,12 @@ function mountCanje(contenedor, opts = {}) {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ic"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
 Plan Canje
         </div>
-        <span class="tic2-badge">Estimación inmediata</span>
+        <span class="tic2-badge">Cotización por WhatsApp</span>
       </div>
       <p class="tic2-title">${variante === "product" && producto
         ? "Calculá cuánto pagás por " + producto.name
         : "Tomamos tu Apple usado y te ayudamos a renovar"}</p>
-      <p class="tic2-desc">Completá los tres campos y te mostramos el valor de tu equipo al instante.</p>
+      <p class="tic2-desc">Contanos qué equipo traés y te pasamos el valor y los pasos por WhatsApp.</p>
 
       <div class="tic2-fields">
         <label>
@@ -235,47 +235,21 @@ Plan Canje
         </label>
         <label>
           <span>Condición de batería</span>
-          <select data-t-bat></select>
+          <div class="tic2-batrow">
+            <input type="text" data-t-bat placeholder="Ej: 85% · todo impecable" autocomplete="off">
+            <div class="tic2-chips" data-t-bat-chips></div>
+          </div>
         </label>
       </div>
 
-      <div class="tic2-result">
-        <div class="tic2-val">
-          <span class="tic2-let">Valor de tu equipo</span>
-          <strong class="tic2-monto" data-t-valor>Sin cotización</strong>
-          <span class="tic2-ars" data-t-ars></span>
-        </div>
-        ${variante === "product" && producto ? `
-        <div class="tic2-val tic2-val-pagas">
-          <span class="tic2-let">Solo pagás la diferencia</span>
-          <strong class="tic2-monto" data-t-pagas>Seleccioná un usado</strong>
-          <span class="tic2-ars" data-t-pagas-ars></span>
-        </div>` : ""}
-      </div>
-
-      <details class="tic2-det">
-        <summary>Ver detalle del cálculo</summary>
-        <dl>
-          <div><dt>Modelo</dt><dd data-t-d-modelo>—</dd></div>
-          <div><dt>Capacidad</dt><dd data-t-d-cap>—</dd></div>
-          <div><dt>Batería</dt><dd data-t-d-bat>—</dd></div>
-        </dl>
-      </details>
-
-      <a class="btn btn-dark btn-full" href="#" target="_blank" rel="noopener noreferrer" data-t-wa>Quiero entregar mi usado</a>
+      <a class="btn btn-dark btn-full" href="#" target="_blank" rel="noopener noreferrer" data-t-wa>Valorar mi equipo</a>
     </div>`;
 
   const modelo = $(`[data-t-modelo]`, contenedor);
   const cap = $(`[data-t-cap]`, contenedor);
   const bat = $(`[data-t-bat]`, contenedor);
+  const chips = $(`[data-t-bat-chips]`, contenedor);
   const wa = $(`[data-t-wa]`, contenedor);
-  const tVal = $(`[data-t-valor]`, contenedor);
-  const tArs = $(`[data-t-ars]`, contenedor);
-  const tPag = $(`[data-t-pagas]`, contenedor);
-  const tPagArs = $(`[data-t-pagas-ars]`, contenedor);
-  const dModelo = $(`[data-t-d-modelo]`, contenedor);
-  const dCap = $(`[data-t-d-cap]`, contenedor);
-  const dBat = $(`[data-t-d-bat]`, contenedor);
 
   const setOpciones = (sel, valores) => {
     sel.innerHTML = valores
@@ -283,53 +257,40 @@ Plan Canje
       .join("");
   };
 
-  const opcionesModelo = [...new Set(CONFIG.tradeIn.models.map((m) => m.name))];
-  setOpciones(modelo, opcionesModelo);
+  setOpciones(modelo, [...new Set(CONFIG.tradeIn.models.map((m) => m.name))]);
   setOpciones(cap, CONFIG.tradeIn.capacities);
-  setOpciones(bat, CONFIG.tradeIn.batteryConditions);
+
+  chips.innerHTML = CONFIG.tradeIn.batteryConditions
+    .map((c) => `<button type="button" class="tic2-chip" data-bat-chip>${c}</button>`)
+    .join("");
 
   function pintar() {
-    const m = modelo.value, c = cap.value, b = bat.value;
-    dModelo.textContent = m || "—";
-    dCap.textContent = c || "—";
-    dBat.textContent = b || "—";
+    const m = modelo.value || "—";
+    const c = cap.value || "—";
+    const b = bat.value.trim() || "sin especificar";
 
-    const y = valorCanje(m, c, b);
-    const usdOk = y !== null;
-    const ars = usdOk ? PRECIOS.ars(y) : null;
+    const datos =
+      "Equipo que entrego: " + m + " " + c + "\n" +
+      "Batería: " + b;
 
-    tVal.textContent = usdOk ? "US$ " + y : "Sin cotización";
-    tArs.innerHTML = ars !== null
-      ? PRECIOS.fmtARS(ars) + " ARS"
-      : "";
-
-    let mensaje;
-    if (producto) {
-      const monto = usdOk ? Math.max(producto.price - y, 0) : null;
-      const montoArs = usdOk ? Math.max(PRECIOS.ars(producto.price) - ars, 0) : null;
-      tPag.textContent = monto !== null ? "US$ " + monto : "Seleccioná un usado";
-      tPagArs.textContent = montoArs !== null ? PRECIOS.fmtARS(montoArs) + " ARS" : "";
-
-      mensaje =
-        "Hola, quiero realizar el plan canje.\n\n" +
+    const mensaje = producto
+      ? "Hola, quiero realizar un plan canje.\n\n" +
         "Producto consultado: " + producto.name + " (" + condicionProducto(producto) + ")\n" +
-        "Equipo que entrego: " + (m || "—") + " " + (c || "—") + " (Batería " + (b || "—") + ")\n" +
-        "Valor estimado de mi usado: " + (usdOk ? "US$ " + y : "Sin cotización") +
-          " (" + (ars !== null ? PRECIOS.fmtARS(ars) + " ARS" : "Sin cotización") + ")\n" +
-        "Monto final a pagar: " + (monto !== null ? "US$ " + monto : "A definir") +
-          " (" + (montoArs !== null ? PRECIOS.fmtARS(montoArs) + " ARS" : "A definir") + ")";
-    } else {
-      mensaje =
-        "Hola, quiero coordinar una evaluación para plan canje.\n\n" +
-        "Equipo que entrego: " + (m || "—") + " " + (c || "—") + " (Batería " + (b || "—") + ")\n" +
-        "Valor estimado de mi usado: " + (usdOk ? "US$ " + y : "Sin cotización") +
-          " (" + (ars !== null ? PRECIOS.fmtARS(ars) + " ARS" : "Sin cotización") + ")";
-    }
+        datos + "\n" +
+        "¿Cuánto vale mi usado y cuánto pagaría por el nuevo?"
+      : "Hola, quiero coordinar una evaluación para plan canje.\n\n" + datos;
+
     wa.href = linkWA(mensaje);
   }
 
-  [modelo, cap, bat].forEach((s) => s.addEventListener("change", pintar));
-  document.addEventListener("precios:update", pintar);
+  $$("[data-bat-chip]", contenedor).forEach((ch) =>
+    ch.addEventListener("click", () => {
+      bat.value = ch.textContent;
+      pintar();
+    })
+  );
+
+  [modelo, cap, bat].forEach((s) => s.addEventListener("input", pintar));
   pintar();
 }
 
@@ -417,11 +378,19 @@ function pintarProductos() {
   }
 
   function pintarTabs() {
+    const tabs = $(".tabs");
+    let activo = null;
     $$(".tab").forEach((t) => {
       const on = t.dataset.tab === tab;
-      t.classList.toggle("activo", on);
+      t.classList.toggle("active", on);
       t.setAttribute("aria-selected", on ? "true" : "false");
+      if (on) activo = t;
     });
+    if (tabs && activo) {
+      tabs.style.setProperty("--tx", activo.offsetLeft + "px");
+      tabs.style.setProperty("--ty", activo.offsetTop + "px");
+      tabs.style.setProperty("--tw", activo.offsetWidth + "px");
+    }
   }
 
   function pintarContador(lista) {
@@ -509,6 +478,7 @@ function pintarProductos() {
   }
 
   redibujar();
+  window.addEventListener("resize", () => { if ($(".tabs")) pintarTabs(); });
   document.addEventListener("precios:update", () => renderLista(cont, filtrar(), "No se encontraron productos."));
 }
 
@@ -541,14 +511,14 @@ function pintarProducto() {
   const crumb = $("[data-crumb]");
   if (!p || !cont) {
     if (crumb) crumb.innerHTML = "";
-    if (cont) cont.innerHTML = `<div class="vacio"><p>Producto no encontrado.</p><p class="vacio-sub">Volvé al <a class="link" href="productos.html">catálogo</a>.</p></div>`;
+    if (cont) cont.innerHTML = `<div class="vacio"><p>Producto no encontrado.</p><p class="vacio-sub">Volvé al <a class="link" href="productos">catálogo</a>.</p></div>`;
     return;
   }
   document.title = p.name + " | " + CONFIG.storeName;
 
   if (crumb) {
     crumb.innerHTML =
-      '<a class="link" href="productos.html?category=' + encodeURIComponent(p.category) + '">' + p.category + "</a> / " +
+      '<a class="link" href="productos?category=' + encodeURIComponent(p.category) + '">' + p.category + "</a> / " +
       "<strong>" + p.name + "</strong>";
   }
 
@@ -781,7 +751,7 @@ function pintarProducto() {
         <p>Escribinos y coordinamos tu compra, tu canje o una visita al local.</p>
         <div class="pdet-cta-actions">
           <a class="btn btn-dark" href="#" target="_blank" rel="noopener noreferrer" data-compra-wa>${ICONO_WA}Consultar por WhatsApp</a>
-          <a class="btn btn-outline" href="productos.html">Ver más productos</a>
+          <a class="btn btn-outline" href="productos">Ver más productos</a>
         </div>
       </section>
     </article>`;
@@ -864,7 +834,7 @@ function iniciar() {
   // link "Plan Canje" en el navbar: si estamos en Inicio, scroll suave
   $$("[data-plan-link]").forEach((a) =>
     a.addEventListener("click", (e) => {
-      if (a.getAttribute("href").indexOf("index.html") !== -1 || a.getAttribute("href").indexOf("#plan-canje") === 0) {
+      if (a.getAttribute("href").indexOf("plan-canje") !== -1) {
         const sec = document.getElementById("plan-canje");
         if (sec) { e.preventDefault(); sec.scrollIntoView({ behavior: "smooth", block: "start" }); }
       }
