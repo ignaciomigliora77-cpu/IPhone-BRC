@@ -312,6 +312,11 @@ a.brand:hover .apple { transform: scale(1.06) rotate(2deg); }
   border-left: 2px solid #06281a; border-bottom: 2px solid #06281a;
   transform: translate(-50%, -50%) rotate(-45deg);
 }
+.hv-fade { animation: hvFade .55s ease; }
+@keyframes hvFade {
+  from { opacity: 0; transform: scale(.98); }
+  to { opacity: 1; transform: none; }
+}
 .hv-chip-b span { text-shadow: 0 1px 2px rgba(0,0,0,.35); }
 @media (max-width: 899px) {
   .hero-new { padding: 4.5rem 0 5.5rem; }
@@ -459,9 +464,11 @@ a.brand:hover .apple { transform: scale(1.06) rotate(2deg); }
 .tic2-desc { position: relative; margin-top: -.5rem; font-size: .875rem; color: var(--gray-500); }
 
 .tic2-fields { position: relative; display: grid; gap: .75rem; }
+@media (min-width: 640px) { .tic2-fields { grid-template-columns: 1fr 1fr; } }
 .tic2-fields label { display: grid; gap: .35rem; font-size: .8rem; font-weight: 500; color: var(--gray-600); }
+.tic2-fields label:last-child { grid-column: 1 / -1; }
 .tic2-fields select {
-  height: 2.5rem; padding: 0 .9rem; font-size: .875rem; color: var(--gray-800);
+  width: 100%; height: 2.5rem; padding: 0 .9rem; font-size: .875rem; color: var(--gray-800);
   border: 1px solid var(--gray-200); border-radius: .75rem; background: #fff; cursor: pointer; outline: none;
 }
 .tic2-fields select:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,.15); }
@@ -471,6 +478,10 @@ a.brand:hover .apple { transform: scale(1.06) rotate(2deg); }
   height: 2.5rem; padding: 0 .9rem; font-size: .875rem; color: var(--gray-800);
   border: 1px solid var(--gray-200); border-radius: .75rem; background: #fff; outline: none;
   font-family: inherit;
+}
+@media (min-width: 640px) {
+  .tic2-batrow { grid-template-columns: 1fr auto; align-items: center; gap: .6rem; }
+  .tic2-batrow .tic2-chips { justify-content: flex-end; }
 }
 .tic2-batrow input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,.15); }
 .tic2-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
@@ -505,6 +516,14 @@ a.brand:hover .apple { transform: scale(1.06) rotate(2deg); }
 .tic2-det dd { margin: 0; font-weight: 600; color: var(--gray-900); }
 
 .tic2 .btn-full { position: relative; }
+.tic2 .btn-full.disabled {
+  opacity: .45; cursor: not-allowed; pointer-events: none;
+  box-shadow: none;
+}
+
+.tic2-chip.active {
+  background: #2563eb; border-color: #2563eb; color: #fff;
+}
 
 /* ---------- Features ---------- */
 .features { display: grid; gap: 2.5rem; }

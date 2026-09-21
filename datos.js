@@ -43,16 +43,16 @@ function buildTradeInModels() {
 
 const CONFIG = {
   storeName: "Emporio Tecnología",
-  storeDescription: "Productos originales con garantía oficial en San Carlos de Bariloche.",
-  whatsappNumber: "542944662166",
+  storeDescription: "Productos originales con garantía oficial en Bariloche.",
+  whatsappNumber: "542944304274",
   email: null,
   instagram: "https://www.instagram.com/emporiotecnologia_/",
   address: {
-    gallery: "Galería Paseo de la Catedral",
-    local: "Local 11",
-    floor: "2º piso",
-    city: "San Carlos de Bariloche",
-    mapsQuery: "Emporio Tecnología",
+    gallery: "Galería del Sol",
+    local: "Av. Mitre 340",
+    floor: "",
+    city: "Bariloche",
+    mapsQuery: "Galería del Sol Av. Mitre 340, Bariloche",
     mapsPlaceId: "0x961a7b0d7179b625:0x8cbf6a724c947a34"
   },
   // Cotización respaldo (se intenta tomar la real en vivo desde bluelytics.com.ar)
@@ -61,6 +61,7 @@ const CONFIG = {
   dollarRateMargin: 20,
   sectionsOrder: ["sale", "refurbished", "tradein", "featured", "features"],
   categories: ["iPhones", "MacBook", "iPad", "AirPods"],
+  heroProductIds: [2, 1, 4, 18],
   tradeIn: {
     enabled: true,
     batteryConditions: ["+90%", "75-90%", "Menos del 75%", "No lo sé"],
@@ -77,7 +78,7 @@ CONFIG.tradeIn.capacities = [...new Set(
 // Dirección legible para mostrar en footer, contacto y detalle.
 function direccionCompleta() {
   const a = CONFIG.address;
-  return a.gallery + " · " + a.local + " · " + a.floor;
+  return [a.gallery, a.local, a.floor].filter(Boolean).join(" · ");
 }
 
 function mapsUrl() {

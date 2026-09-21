@@ -242,7 +242,7 @@ Plan Canje
         </label>
       </div>
 
-      <a class="btn btn-dark btn-full" href="#" target="_blank" rel="noopener noreferrer" data-t-wa>Valorar mi equipo</a>
+      <a class="btn btn-dark btn-full" href="#" target="_blank" rel="noopener noreferrer" data-t-wa aria-disabled="true">Valorar mi equipo</a>
     </div>`;
 
   const modelo = $(`[data-t-modelo]`, contenedor);
@@ -267,30 +267,42 @@ Plan Canje
   function pintar() {
     const m = modelo.value || "—";
     const c = cap.value || "—";
-    const b = bat.value.trim() || "sin especificar";
+    const b = bat.value.trim();
+
+    const completo = m !== "—" && !!c && !!b;
+    wa.classList.toggle("disabled", !b);
+    wa.setAttribute("aria-disabled", b ? "false" : "true");
 
     const datos =
-      "Equipo que entrego: " + m + " " + c + "\n" +
-      "Batería: " + b;
+      "Equipo a entregar: " + m + " " + c + "\n" +
+      "Estado de batería: " + (b || "—");
 
     const mensaje = producto
-      ? "Hola, quiero realizar un plan canje.\n\n" +
-        "Producto consultado: " + producto.name + " (" + condicionProducto(producto) + ")\n" +
-        datos + "\n" +
-        "¿Cuánto vale mi usado y cuánto pagaría por el nuevo?"
-      : "Hola, quiero coordinar una evaluación para plan canje.\n\n" + datos;
+      ? "¡Hola! 👋 Soy de " + CONFIG.storeName + " y quiero cotizar mi equipo para llegar a un " + producto.name + ".\n\n" +
+        datos + "\n\n" +
+        "¿Podrían pasarme el valor que me dan por mi usado y cuál sería el precio final del " + producto.name + " (" + condicionProducto(producto) + ")?\n" +
+        "Quedo atento a su respuesta. ¡Gracias!"
+      : "¡Hola! 👋 Soy de " + CONFIG.storeName + " y quiero hacer un plan canje con un equipo de su catálogo.\n\n" +
+        datos + "\n\n" +
+        "¿Podrían pasarme el valor de mi usado y cómo sería el proceso para renovar?\n" +
+        "Quedo a su disposición, ¡gracias!";
 
-    wa.href = linkWA(mensaje);
+    if (b) wa.href = linkWA(mensaje);
   }
 
   $$("[data-bat-chip]", contenedor).forEach((ch) =>
     ch.addEventListener("click", () => {
       bat.value = ch.textContent;
+      $$("[data-bat-chip]", contenedor).forEach((x) => x.classList.toggle("active", x === ch));
       pintar();
     })
   );
 
   [modelo, cap, bat].forEach((s) => s.addEventListener("input", pintar));
+  bat.addEventListener("input", () => {
+    $$("[data-bat-chip]", contenedor).forEach((ch) => ch.classList.remove("active"));
+    pintar();
+  });
   pintar();
 }
 
@@ -301,6 +313,8 @@ function pintarHome() {
   const bestSellers = PRODUCTOS.filter((p) => p.isBestSeller);
   const onSale = PRODUCTOS.filter((p) => p.isOnSale);
   const refurb = PRODUCTOS.filter((p) => p.condition === "refurbished");
+
+  pintarHero();
 
   renderLista(fr("[data-contenido-ofertas]"), onSale,
     "No hay productos en oferta actualmente.");
@@ -321,6 +335,39 @@ function pintarHome() {
     renderLista(fr("[data-contenido-destacados]"), featured,
       "Marca productos como destacados.");
   });
+}
+
+/* ---------- Hero (rotación de destacados) ---------- */
+function pintarHero() {
+  const card = $("[data-hero-rot]");
+  if (!card) return;
+  const ids = CONFIG.heroProductIds || [];
+  const lista = ids
+    .map((id) => PRODUCTOS.find((p) => String(p.id) === String(id)))
+    .filter(Boolean);
+  if (!lista.length) return;
+
+  const chipA = card.querySelector(".hv-chip-a");
+  const img = card.querySelector(".hv-img");
+  const usd = (p) => p.price.toLocaleString("es-AR");
+
+  let i = 0;
+  const mostrar = () => {
+    const p = lista[i % lista.length];
+    if (img) { img.src = p.image; img.alt = p.name; }
+    if (chipA) {
+      chipA.href = "producto?id=" + p.id;
+      chipA.querySelector("b").textContent = p.name;
+      chipA.querySelector("span").textContent = "Desde US$ " + usd(p);
+    }
+    card.classList.remove("hv-fade");
+    void card.offsetWidth;
+    card.classList.add("hv-fade");
+    i++;
+  };
+
+  mostrar();
+  setInterval(mostrar, 3500);
 }
 
 /* ---------- Productos ---------- */
@@ -647,7 +694,6 @@ function pintarProducto() {
 
           <div class="pdet-actions">
             <a class="btn btn-dark" href="#" target="_blank" rel="noopener noreferrer" data-compra-wa>${ICONO_WA}<span>Consultar por WhatsApp</span></a>
-            <a class="btn btn-outline" href="#plan-canje">Plan Canje</a>
           </div>
         </div>
       </div>
@@ -664,15 +710,6 @@ function pintarProducto() {
               <span><b>${h}</b></span>
             </div>`).join("")}
         </div>
-      </section>
-
-      <section class="pdet-section" id="plan-canje">
-        <div class="pdet-head">
-          <span class="pdet-eyebrow">Plan Canje</span>
-          <h2>Entregá tu usado y renová</h2>
-          <p>Calculá el valor de tu celular actual y pagá solo la diferencia por este equipo. Sin trámites, en el momento.</p>
-        </div>
-        <div class="pdet-tool" data-canje-product></div>
       </section>
 
       <section class="pdet-section">
@@ -714,7 +751,7 @@ function pintarProducto() {
           <span class="ubica-ic">${ICONO_MAP}</span>
           <div>
             <b>${direccionCompleta()}</b>
-            <p>${CONFIG.address.city}, Río Negro. Coordiná tu visita por WhatsApp o pasa directo al local.</p>
+            <p>${CONFIG.address.city}, Río Negro. Pasá a probarlo en el local.</p>
           </div>
           <div class="ubica-links">
             <a class="btn btn-outline" href="${mapsUrl()}" target="_blank" rel="noopener noreferrer">Cómo llegar</a>
@@ -804,10 +841,6 @@ function pintarProducto() {
       actualizarWA();
     })
   );
-
-  // Plan Canje de este producto
-  const canjeEl = $("[data-canje-product]", cont);
-  if (canjeEl) mountCanje(canjeEl, { variant: "product", product: p });
 
   // Relacionados
   const relEl = $("[data-pdet-rel]", cont);
