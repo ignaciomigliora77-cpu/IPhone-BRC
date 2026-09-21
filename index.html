@@ -1,129 +1,79 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPhone Store BRC | Vidriera Digital</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>iPhone Store BRC | iPhone originales en Bariloche</title>
+  <meta name="description" content="iPhone nuevos y usados, accesorios y plan canje en Bariloche. Consultá por WhatsApp.">
+  <meta name="theme-color" content="#000000">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-white text-neutral-900 antialiased selection:bg-neutral-900 selection:text-white">
+<body>
 
-    <!-- Header Fijo / Minimalista -->
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-100">
-        <div class="max-w-7xl mx-auto px-8 h-24 flex items-center justify-between">
-            <a href="#" class="font-medium tracking-tight text-base uppercase">iPhone Store <span class="text-neutral-400 font-light">BRC</span></a>
-            <nav class="hidden md:flex gap-10 text-xs font-medium tracking-widest uppercase text-neutral-500">
-                <a href="#iphones" class="hover:text-black transition">Nuevos</a>
-                <a href="#seminuevos" class="hover:text-black transition">Seminuevos</a>
-                <a href="#accesorios" class="hover:text-black transition">Audio</a>
-            </nav>
-            <a href="https://wa.me/549999999999?text=Hola,%20quiero%20consultar%20por%20stock" target="_blank" class="text-xs font-medium uppercase tracking-widest border-b border-neutral-900 pb-0.5 hover:opacity-60 transition">
-                WhatsApp
-            </a>
-        </div>
-    </header>
+  <header class="topbar">
+    <a href="#inicio" class="brand">iPhone Store BRC</a>
+    <nav class="nav">
+      <a href="#productos">Productos</a>
+      <a href="#canje">Plan canje</a>
+      <a href="#ubicacion">Ubicación</a>
+    </nav>
+    <a class="btn btn-small" data-wa="Hola! Quería hacer una consulta." href="#">WhatsApp</a>
+  </header>
 
-    <!-- Hero / Estética Limpia -->
-    <section class="max-w-5xl mx-auto px-8 pt-24 pb-16 text-center">
-        <span class="text-[10px] font-semibold tracking-[0.3em] text-neutral-400 uppercase">Mitre 442 — Bariloche</span>
-        <h1 class="text-3xl md:text-5xl font-light tracking-tight mt-4 mb-6 leading-tight">Tecnología seleccionada.</h1>
-        <p class="text-neutral-400 max-w-sm mx-auto text-xs md:text-sm font-light leading-relaxed">Simplicidad, diseño y asesoramiento directo en el centro de la ciudad.</p>
+  <main id="inicio">
+
+    <section class="hero">
+      <h1>iPhone originales,<br>con garantía.</h1>
+      <p class="hero-sub">Nuevos y usados, accesorios y plan canje. Escribinos y te respondemos al toque.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#productos">Ver productos</a>
+        <a class="btn btn-ghost" data-wa="Hola! Quería consultar por un iPhone." href="#">Consultar por WhatsApp</a>
+      </div>
     </section>
 
-    <!-- Catálogo de Productos -->
-    <main class="max-w-7xl mx-auto px-8 pb-32 space-y-32">
+    <section class="section" id="productos">
+      <div class="section-head">
+        <h2>Productos</h2>
+        <input id="buscador" type="search" placeholder="Buscar modelo…" aria-label="Buscar producto">
+      </div>
+      <div class="chips" id="filtros" role="tablist" aria-label="Categorías"></div>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="vacio" hidden>No encontramos ese producto. Escribinos y lo consultamos.</p>
+    </section>
 
-        <!-- Sección Nuevos -->
-        <section id="iphones">
-            <div class="mb-12 border-b border-neutral-100 pb-4 flex justify-between items-end">
-                <h2 class="text-xs font-semibold tracking-[0.2em] text-neutral-400 uppercase">01 / Equipos Nuevos</h2>
-                <span class="text-xs text-neutral-400 font-light">Caja sellada</span>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
-                <!-- Card 1 -->
-                <div class="group flex flex-col justify-between">
-                    <div>
-                        <div class="bg-neutral-50 aspect-[4/5] rounded-xl mb-6 overflow-hidden flex items-center justify-center text-neutral-300 text-xs font-light transition group-hover:bg-neutral-100">
-                            [ Fotografía ]
-                        </div>
-                        <div class="flex justify-between items-baseline">
-                            <h3 class="font-normal text-sm tracking-wide">iPhone 15 Pro Max</h3>
-                            <span class="text-xs font-medium text-neutral-900">USD 1,350</span>
-                        </div>
-                        <p class="text-[11px] text-neutral-400 font-light mt-1">256GB — Titanio Natural</p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-neutral-100 flex justify-between items-center">
-                        <span class="text-[11px] text-neutral-400 font-light">$ 1.450.000</span>
-                        <a href="https://wa.me/?text=Hola,%20me%20interesa%20el%20iPhone%2015%20Pro%20Max" target="_blank" class="text-xs font-medium tracking-wider uppercase hover:underline">
-                            Consultar &rarr;
-                        </a>
-                    </div>
-                </div>
+    <section class="section canje" id="canje">
+      <h2>Plan canje</h2>
+      <p>Entregá tu iPhone usado como parte de pago y llevate uno nuevo. Mandanos el modelo, la capacidad y el estado de la batería y te cotizamos.</p>
+      <a class="btn" data-wa="Hola! Quiero cotizar mi iPhone para el plan canje." href="#">Cotizar mi iPhone</a>
+    </section>
 
-                <!-- Card 2 -->
-                <div class="group flex flex-col justify-between">
-                    <div>
-                        <div class="bg-neutral-50 aspect-[4/5] rounded-xl mb-6 overflow-hidden flex items-center justify-center text-neutral-300 text-xs font-light transition group-hover:bg-neutral-100">
-                            [ Fotografía ]
-                        </div>
-                        <div class="flex justify-between items-baseline">
-                            <h3 class="font-normal text-sm tracking-wide">iPhone 15</h3>
-                            <span class="text-xs font-medium text-neutral-900">USD 920</span>
-                        </div>
-                        <p class="text-[11px] text-neutral-400 font-light mt-1">128GB — Black</p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-neutral-100 flex justify-between items-center">
-                        <span class="text-[11px] text-neutral-400 font-light">$ 990.000</span>
-                        <a href="https://wa.me/?text=Hola,%20me%20interesa%20el%20iPhone%2015" target="_blank" class="text-xs font-medium tracking-wider uppercase hover:underline">
-                            Consultar &rarr;
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section class="section" id="ubicacion">
+      <h2>Dónde estamos</h2>
+      <div class="ubicacion">
+        <div class="info">
+          <p>Bariloche, Río Negro</p>
+          <p>Horarios: lunes a sábado, de 10 a 13 y de 16 a 20</p>
+          <a class="btn btn-ghost" target="_blank" rel="noopener"
+             href="https://www.google.com/maps/search/?api=1&query=-41.1340123,-71.3034064">Cómo llegar</a>
+        </div>
+        <iframe title="Mapa" loading="lazy"
+          src="https://maps.google.com/maps?q=-41.1340123,-71.3034064&z=17&output=embed"></iframe>
+      </div>
+    </section>
 
-        <!-- Sección Seminuevos -->
-        <section id="seminuevos">
-            <div class="mb-12 border-b border-neutral-100 pb-4 flex justify-between items-end">
-                <h2 class="text-xs font-semibold tracking-[0.2em] text-neutral-400 uppercase">02 / Equipos Seminuevos</h2>
-                <span class="text-xs text-neutral-400 font-light">Revisión técnica 100%</span>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
-                <!-- Card Seminuevo -->
-                <div class="group flex flex-col justify-between">
-                    <div>
-                        <div class="bg-neutral-50 aspect-[4/5] rounded-xl mb-6 overflow-hidden flex items-center justify-center text-neutral-300 text-xs font-light transition group-hover:bg-neutral-100">
-                            [ Fotografía ]
-                        </div>
-                        <div class="flex justify-between items-baseline">
-                            <h3 class="font-normal text-sm tracking-wide">iPhone 14 Pro</h3>
-                            <span class="text-xs font-medium text-neutral-900">USD 950</span>
-                        </div>
-                        <p class="text-[11px] text-neutral-400 font-light mt-1">128GB — Batería 92%</p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-neutral-100 flex justify-between items-center">
-                        <span class="text-[11px] text-neutral-400 font-light">$ 1.020.000</span>
-                        <a href="https://wa.me/?text=Hola,%20me%20interesa%20el%20iPhone%2014%20Pro%20seminuevo" target="_blank" class="text-xs font-medium tracking-wider uppercase hover:underline">
-                            Consultar &rarr;
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+  </main>
 
-    </main>
+  <footer class="footer">
+    <span>© <span id="anio"></span> iPhone Store BRC</span>
+    <a href="https://instagram.com/" target="_blank" rel="noopener" id="ig">Instagram</a>
+  </footer>
 
-    <!-- Footer Discreto -->
-    <footer class="border-t border-neutral-100 py-16 text-center text-xs text-neutral-400 font-light tracking-widest uppercase">
-        <p>iPhone Store BRC — Bariloche</p>
-    </footer>
+  <a class="wa-float" data-wa="Hola! Quería hacer una consulta." href="#" aria-label="Escribir por WhatsApp">WhatsApp</a>
 
+  <script src="productos.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
