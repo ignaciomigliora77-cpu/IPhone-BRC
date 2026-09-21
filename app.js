@@ -1,5 +1,5 @@
 /* ============================================================
- *  Iphone Store BRC — lógica compartida
+ *  Emporio Tecnología — lógica compartida
  * ============================================================ */
 
 /* Colores de los swatches (tono aproximado para los botones de color) */
@@ -215,7 +215,7 @@ function mountCanje(contenedor, opts = {}) {
       <div class="tic2-head">
         <div class="tic2-eyebrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ic"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
-          Plan Canje BRC
+Plan Canje
         </div>
         <span class="tic2-badge">Estimación inmediata</span>
       </div>
@@ -337,11 +337,14 @@ function mountCanje(contenedor, opts = {}) {
 function pintarHome() {
   const fr = (sel) => $(sel);
   const featured = PRODUCTOS.filter((p) => p.isFeatured);
+  const bestSellers = PRODUCTOS.filter((p) => p.isBestSeller);
   const onSale = PRODUCTOS.filter((p) => p.isOnSale);
   const refurb = PRODUCTOS.filter((p) => p.condition === "refurbished");
 
   renderLista(fr("[data-contenido-ofertas]"), onSale,
     "No hay productos en oferta actualmente.");
+  renderLista(fr("[data-contenido-masvendidos]"), bestSellers.slice(0, 4),
+    "Marca productos como más vendidos.");
   renderLista(fr("[data-contenido-seminuevos]"), refurb.slice(0, 4),
     'Agregá productos con condición "seminuevo".');
   renderLista(fr("[data-contenido-destacados]"), featured,
@@ -350,6 +353,8 @@ function pintarHome() {
   document.addEventListener("precios:update", () => {
     renderLista(fr("[data-contenido-ofertas]"), onSale,
       "No hay productos en oferta actualmente.");
+    renderLista(fr("[data-contenido-masvendidos]"), bestSellers.slice(0, 4),
+      "Marca productos como más vendidos.");
     renderLista(fr("[data-contenido-seminuevos]"), refurb.slice(0, 4),
       'Agregá productos con condición "seminuevo".');
     renderLista(fr("[data-contenido-destacados]"), featured,
@@ -370,6 +375,7 @@ function pintarProductos() {
   const params = new URLSearchParams(location.search);
   if (params.get("filter") === "ofertas") tab = "ofertas";
   if (params.get("filter") === "seminuevos") tab = "seminuevos";
+  if (params.get("tab") === "masvendidos") tab = "masvendidos";
   busqueda = params.get("search") || "";
   cat = params.get("category") || null;
 
@@ -392,10 +398,11 @@ function pintarProductos() {
       let porTab = true;
       if (tab === "nuevos") porTab = p.isNew;
       if (tab === "ofertas") porTab = p.isOnSale;
+      if (tab === "masvendidos") porTab = p.isBestSeller;
       if (tab === "seminuevos") porTab = p.condition === "refurbished";
       return porBusqueda && porCat && porPrecio && porTab;
     });
-    lista.sort((a, b) => b.price - a.price);
+    if (tab !== "masvendidos") lista.sort((a, b) => b.price - a.price);
     return lista;
   }
 
@@ -439,6 +446,7 @@ function pintarProductos() {
     const lista = filtrar();
     const texto = tab === "ofertas" ? "No hay productos en oferta actualmente."
       : tab === "nuevos" ? "No se encontraron productos nuevos."
+      : tab === "masvendidos" ? "No se encontraron productos más vendidos."
       : "No se encontraron productos.";
     renderLista(cont, lista, texto, animarTab);
     pintarContador(lista);
@@ -450,7 +458,7 @@ function pintarProductos() {
   // tabs (la lista entra con animación solo al cambiar de pestaña)
   $$(".tab").forEach((t) => t.addEventListener("click", () => {
     tab = t.dataset.tab;
-    if (tab === "seminuevos" || tab === "ofertas" || tab === "nuevos" || tab === "todos") redibujar(true);
+    if (tab === "seminuevos" || tab === "ofertas" || tab === "nuevos" || tab === "masvendidos" || tab === "todos") redibujar(true);
   }));
 
   // filtros (sidebar + sheet)
@@ -690,7 +698,7 @@ function pintarProducto() {
 
       <section class="pdet-section" id="plan-canje">
         <div class="pdet-head">
-          <span class="pdet-eyebrow">Plan Canje BRC</span>
+          <span class="pdet-eyebrow">Plan Canje</span>
           <h2>Entregá tu usado y renová</h2>
           <p>Calculá el valor de tu celular actual y pagá solo la diferencia por este equipo. Sin trámites, en el momento.</p>
         </div>
