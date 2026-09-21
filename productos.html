@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos Apple | Iphone Store BRC</title>
+  <meta name="description" content="Explora nuestra selección de productos Apple premium con filtros, búsqueda y precios en pesos argentinos.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css?v=3">
+  <script src="datos.js?v=3" defer></script>
+  <script src="app.js?v=3" defer></script>
+</head>
+<body>
+  <div class="page">
+    <nav class="navbar">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">
+          <img src="images/brc-logotype.png" alt="Logo Iphone Store BRC" width="40" height="40">
+          <span>Iphone Store BRC</span>
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="index.html">Inicio</a>
+          <a class="nav-link active" href="productos.html">Productos</a>
+          <a class="nav-link" href="index.html#plan-canje" data-plan-link>Plan Canje</a>
+          <a class="nav-link" href="contacto.html">Contacto</a>
+        </div>
+        <div class="nav-search" data-nav-search>
+          <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" placeholder="Buscar productos..." aria-label="Buscar productos" data-search-input autocomplete="off">
+          <button class="clear-btn" type="button" data-nav-clear aria-label="Limpiar búsqueda">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+          <div class="search-results" data-search-results></div>
+        </div>
+        <button class="nav-burger" type="button" data-burger aria-expanded="false" aria-label="Abrir menú">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+        </button>
+      </div>
+      <div class="container nav-mobile" data-nav-mobile>
+        <div class="m-search">
+          <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" placeholder="Buscar productos..." aria-label="Buscar productos" data-search-input autocomplete="off">
+        </div>
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="index.html#plan-canje" data-plan-link>Plan Canje</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+    </nav>
+
+    <main class="container" style="padding-top:3rem; padding-bottom:4rem;">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">Productos Apple</h1>
+          <p class="page-sub">Explora nuestra selección de productos Apple premium.</p>
+        </div>
+        <div class="head-tools">
+          <div class="buscar-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="search" placeholder="Buscar productos..." aria-label="Buscar en el catálogo" data-busqueda autocomplete="off">
+            <button class="clear-btn" type="button" data-limpiar-busqueda aria-label="Limpiar búsqueda">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+          <button class="btn btn-outline btn-icon md-hidden-filter" type="button" data-filtro-abrir aria-label="Filtrar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="layout">
+        <aside class="sidebar">
+          <div class="sidebar-sticky">
+            <h3 class="side-label">Categorías</h3>
+            <div class="filtro-group">
+              <button class="filtro-btn" type="button" data-f-cat="iPhones">iPhones</button>
+              <button class="filtro-btn" type="button" data-f-cat="MacBook">MacBook</button>
+              <button class="filtro-btn" type="button" data-f-cat="iPad">iPad</button>
+              <button class="filtro-btn" type="button" data-f-cat="AirPods">AirPods</button>
+              <button class="filtro-btn" type="button" data-f-cat="iMac">iMac</button>
+            </div>
+            <div class="sep"></div>
+            <h3 class="side-label">Precio</h3>
+            <div class="filtro-group">
+              <button class="filtro-btn" type="button" data-f-precio="under500">Menos de $500</button>
+              <button class="filtro-btn" type="button" data-f-precio="500to1000">$500 - $1000</button>
+              <button class="filtro-btn" type="button" data-f-precio="1000to2000">$1000 - $2000</button>
+              <button class="filtro-btn" type="button" data-f-precio="over2000">Más de $2000</button>
+            </div>
+          </div>
+        </aside>
+
+        <div class="resultados">
+          <div class="tabs" role="tablist" aria-label="Filtrar productos">
+            <button class="tab active" type="button" role="tab" data-tab="todos" aria-selected="true">Todos</button>
+            <button class="tab" type="button" role="tab" data-tab="nuevos" aria-selected="false">Nuevos</button>
+            <button class="tab" type="button" role="tab" data-tab="ofertas" aria-selected="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+              Ofertas
+            </button>
+            <button class="tab" type="button" role="tab" data-tab="seminuevos" aria-selected="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+              Seminuevos
+            </button>
+          </div>
+          <div class="res-head">
+            <span class="res-count" data-contador aria-live="polite"></span>
+          </div>
+          <div data-resultados></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="images/brc-logotype.png" alt="Logo Iphone Store BRC" width="40" height="40">
+            <span>Iphone Store BRC</span>
+          </div>
+          <p class="f-muted" style="margin-top:1rem;">Tu iPhone en manos expertas. Productos originales con garantía oficial.</p>
+        </div>
+        <div>
+          <h3>Navegación</h3>
+          <ul>
+            <li><a class="flink" href="index.html">Inicio</a></li>
+            <li><a class="flink" href="productos.html">Productos</a></li>
+            <li><a class="flink" href="index.html#plan-canje" data-plan-link>Plan Canje</a></li>
+            <li><a class="flink" href="contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Contacto</h3>
+          <div class="f-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M22 12h-4l-3 9L9.5 3l-2.5 8H2"/></svg>
+            <span>Mitre 442, Dpto 11, San Carlos de Bariloche</span>
+          </div>
+          <div class="f-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17v1a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-1"/><path d="M5 10 3.5 8.5a2 2 0 0 1 0-3L5.5 3.5a1.5 1.5 0 0 1 2.1.1l1.4 1.4a.5.5 0 0 1 0 .7L4 10"/><path d="M19 10l1.5-1.5a2 2 0 0 0 0-3L18.5 3.5a1.5 1.5 0 0 0-2.1.1L15 5"/><path d="M4 14h16"/><path d="M12 10v14"/></svg>
+            <a class="underline" href="https://wa.me/542944662166" target="_blank" rel="noopener noreferrer">+54 9 2944 66-2166</a>
+          </div>
+        </div>
+        <div>
+          <h3>Seguinos</h3>
+          <ul>
+            <li>
+              <a class="flink" href="https://www.instagram.com/iphone_store_brc" target="_blank" rel="noopener noreferrer">
+                @iphone_store_brc
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © <span id="anio"></span> Iphone Store BRC. Todos los derechos reservados.
+      </div>
+    </footer>
+  </div>
+
+  <div class="filtro-backdrop" data-filtro-backdrop></div>
+  <aside class="filtro-sheet" data-filtro-sheet aria-label="Filtros" role="dialog" aria-modal="true">
+    <div class="sheet-head">
+      <b>Filtros</b>
+      <button class="sheet-close" type="button" data-filtro-cerrar aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <p class="sheet-desc">Filtra los productos por categoría y precio.</p>
+    <div class="sep" style="margin:1rem 0;"></div>
+    <h3 class="side-label">Categorías</h3>
+    <div class="filtro-group">
+      <button class="filtro-btn" type="button" data-f-cat="iPhones">iPhones</button>
+      <button class="filtro-btn" type="button" data-f-cat="MacBook">MacBook</button>
+      <button class="filtro-btn" type="button" data-f-cat="iPad">iPad</button>
+      <button class="filtro-btn" type="button" data-f-cat="AirPods">AirPods</button>
+      <button class="filtro-btn" type="button" data-f-cat="iMac">iMac</button>
+    </div>
+    <div class="sep"></div>
+    <h3 class="side-label">Precio</h3>
+    <div class="filtro-group">
+      <button class="filtro-btn" type="button" data-f-precio="under500">Menos de $500</button>
+      <button class="filtro-btn" type="button" data-f-precio="500to1000">$500 - $1000</button>
+      <button class="filtro-btn" type="button" data-f-precio="1000to2000">$1000 - $2000</button>
+      <button class="filtro-btn" type="button" data-f-precio="over2000">Más de $2000</button>
+    </div>
+    <div class="sep"></div>
+    <button class="btn btn-dark btn-full" type="button" data-filtro-cerrar>Ver resultados</button>
+  </aside>
+
+  <script>
+    document.getElementById("anio").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

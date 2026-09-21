@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iphone Store BRC | Tu iPhone en manos expertas</title>
-  <meta name="description" content="Productos Apple originales con garantía oficial. Plan Canje, seminuevos y financiación en Bariloche.">
+  <title>Producto | Iphone Store BRC</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="styles.css?v=3">
@@ -20,7 +19,7 @@
           <span>Iphone Store BRC</span>
         </a>
         <div class="nav-links">
-          <a class="nav-link active" href="index.html">Inicio</a>
+          <a class="nav-link" href="index.html">Inicio</a>
           <a class="nav-link" href="productos.html">Productos</a>
           <a class="nav-link" href="index.html#plan-canje" data-plan-link>Plan Canje</a>
           <a class="nav-link" href="contacto.html">Contacto</a>
@@ -49,86 +48,32 @@
       </div>
     </nav>
 
-    <main>
-      <header class="hero">
-        <div class="hero-bg" style="background-image: url('images/bariloche-mountain2-opt.jpg');"></div>
-        <div class="container hero-content">
-          <span class="hero-badge">
-            <span class="hero-badge-dot"></span>
-            Apple Store · San Carlos de Bariloche
-          </span>
-          <h1>Tu iPhone en manos expertas</h1>
-          <p>Productos originales con garantía oficial. Plan Canje, seminuevos y compra al instante.</p>
-          <div class="hero-actions">
-            <a class="btn btn-white" href="productos.html">
-              Ver catálogo
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-            <a class="btn btn-ghost" href="index.html#plan-canje" data-plan-link>Plan Canje</a>
-          </div>
-          <div class="hero-stats">
-            <div class="hero-stat"><b>+5</b><span>años de experiencia</span></div>
-            <div class="hero-stat"><b>+7.000</b><span>clientes en todo el país</span></div>
-            <div class="hero-stat"><b>100%</b><span>equipos originales</span></div>
-          </div>
-        </div>
-      </header>
+    <main class="container" style="padding-top:2rem; padding-bottom:4rem;">
+      <nav aria-label="breadcrumb" style="margin-bottom:1.5rem; font-size:.875rem; color:#6b7280;">
+        <a class="link" href="index.html">Inicio</a> / <a class="link" href="productos.html">Productos</a>
+      </nav>
 
-      <section class="cat-strip">
-        <div class="container cat-chips">
-          <a class="chip" href="productos.html?category=iPhones">iPhones</a>
-          <a class="chip" href="productos.html?category=MacBook">MacBook</a>
-          <a class="chip" href="productos.html?category=iPad">iPad</a>
-          <a class="chip" href="productos.html?category=AirPods">AirPods</a>
-          <a class="chip" href="productos.html?category=iMac">iMac</a>
-        </div>
-      </section>
+      <div data-detalle></div>
 
-      <section class="section">
-        <div class="container">
-          <div class="head-row">
-            <div>
-              <h2 class="section-title head-title">Ofertas de la semana</h2>
-              <p class="section-sub">Precios rebajados por tiempo limitado</p>
-            </div>
-            <a class="btn btn-outline" href="productos.html?filter=ofertas">Ver todas las ofertas</a>
-          </div>
-          <div data-contenido-ofertas></div>
-        </div>
-      </section>
-
-      <section class="section section-gray">
-        <div class="container">
-          <div class="head-row">
-            <div>
-              <h2 class="section-title head-title">Destacados</h2>
-              <p class="section-sub">Los que más vuelan de la tienda</p>
-            </div>
-            <a class="btn btn-outline" href="productos.html">Ver todo</a>
-          </div>
-          <div data-contenido-destacados></div>
-        </div>
-      </section>
-
-      <section class="section" id="plan-canje">
-        <div class="container">
+      <section class="canje-panel" id="plan-canje">
+        <div class="plan-canje">
           <div class="canje2">
             <div class="canje2-copy">
               <span class="canje2-eyebrow">Plan Canje BRC</span>
-              <h2 class="canje2-title">Renová tu Apple,<br>entregá tu usado</h2>
-              <p class="canje2-sub">Traé tu iPhone usado y pagá solo la diferencia por uno nuevo o seminuevo. Estimación inmediata, sin vueltas y sin trámites.</p>
+              <h2 class="canje2-title">¿Tenés un usado para entregar?</h2>
+              <p class="canje2-sub">Estimá el valor de tu equipo y pagá solo la diferencia por este producto. Sin vueltas, en el momento.</p>
               <ol class="canje2-steps">
                 <li>
                   <span class="snum">1</span>
-                  <div><b>Elegí tu modelo</b><small>iPhone, capacidad y estado de batería.</small></div>
+                  <div><b>Elegí tu equipo</b><small>Modelo, capacidad y batería.</small></div>
                 </li>
                 <li>
                   <span class="snum">2</span>
-                  <div><b>Calculá tu valor</b><small>Te mostramos cuánto vale tu equipo hoy.</small></div>
+                  <div><b>Calculá tu valor</b><small>Te mostramos cuánto vale hoy.</small></div>
                 </li>
                 <li>
                   <span class="snum">3</span>
-                  <div><b>Escribinos</b><small>Coordinamos todo por WhatsApp.</small></div>
+                  <div><b>Escribinos</b><small>Coordinamos por WhatsApp.</small></div>
                 </li>
               </ol>
               <div class="canje2-mini">
@@ -137,53 +82,7 @@
                 <div class="canje2-mini-card"><p>iPhone 12 Pro Max</p><b>desde US$ 200</b></div>
               </div>
             </div>
-            <div class="canje2-tool" data-canje-home></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-gray">
-        <div class="container">
-          <div class="head-row">
-            <div>
-              <h2 class="section-title head-title">Seminuevos</h2>
-              <p class="section-sub">Revisados y con garantía</p>
-            </div>
-            <a class="btn btn-outline" href="productos.html?filter=seminuevos">Ver seminuevos</a>
-          </div>
-          <div data-contenido-seminuevos></div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="head-row">
-            <div>
-              <h2 class="section-title head-title">¿Por qué elegirnos?</h2>
-            </div>
-          </div>
-          <div class="features">
-            <div class="feature">
-              <div class="feature-ic">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-              </div>
-              <h3>Productos 100% originales</h3>
-              <p>Garantía oficial de Apple en todo el catálogo.</p>
-            </div>
-            <div class="feature">
-              <div class="feature-ic">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
-              </div>
-              <h3>Más de 5 años</h3>
-              <p>Más de 7.000 clientes nos confían sus equipos, en Bariloche y en todo el país.</p>
-            </div>
-            <div class="feature">
-              <div class="feature-ic">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22h6"/></svg>
-              </div>
-              <h3>Aceptamos USDT</h3>
-              <p>Pago en pesos, dólares o cripto. Te asesoramos antes y después de la compra.</p>
-            </div>
+            <div class="canje2-tool" data-canje-product></div>
           </div>
         </div>
       </section>
