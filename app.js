@@ -480,7 +480,10 @@ function pintarProductos() {
   // tabs (la lista entra con animación solo al cambiar de pestaña)
   $$(".tab").forEach((t) => t.addEventListener("click", () => {
     tab = t.dataset.tab;
-    if (tab === "seminuevos" || tab === "ofertas" || tab === "nuevos" || tab === "masvendidos" || tab === "todos") redibujar(true);
+    if (tab === "seminuevos" || tab === "ofertas" || tab === "nuevos" || tab === "masvendidos" || tab === "todos") {
+      t.scrollIntoView({ inline: "nearest", block: "nearest" });
+      redibujar(true);
+    }
   }));
 
   // filtros (sidebar + sheet)
@@ -871,29 +874,6 @@ function iniciar() {
 
   const canjeHome = $("[data-canje-home]");
   if (canjeHome) mountCanje(canjeHome, { variant: "home" });
-
-  // link "Plan Canje" en el navbar: si estamos en Inicio, scroll suave
-  // y marca la píldora activa en el link correspondiente (evita que
-  // quede trabada en "Inicio" al navegar a la sección).
-  const marcarPlanActivo = () => {
-    $$(".nav-link, [data-nav-mobile] a").forEach((el) => {
-      const esPlan = (el.getAttribute("href") || "").indexOf("plan-canje") !== -1;
-      el.classList.toggle("active", esPlan);
-    });
-  };
-  $$("[data-plan-link]").forEach((a) =>
-    a.addEventListener("click", (e) => {
-      if (a.getAttribute("href").indexOf("plan-canje") !== -1) {
-        const sec = document.getElementById("plan-canje");
-        if (sec) {
-          e.preventDefault();
-          marcarPlanActivo();
-          sec.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }
-    })
-  );
-  if ((location.hash || "").indexOf("plan-canje") !== -1) marcarPlanActivo();
 
   if (!sessionStorage.getItem("dolar")) cargarDolar();
 }

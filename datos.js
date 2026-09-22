@@ -61,7 +61,7 @@ const CONFIG = {
   dollarRateMargin: 20,
   sectionsOrder: ["sale", "refurbished", "tradein", "featured", "features"],
   categories: ["iPhones", "MacBook", "iPad", "AirPods"],
-  heroProductIds: [2, 1],
+  heroProductIds: [2, 1, 3, 5, 18, 6],
   tradeIn: {
     enabled: true,
     batteryConditions: ["+90%", "75-90%", "Menos del 75%", "No lo sé"],
