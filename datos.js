@@ -61,7 +61,7 @@ const CONFIG = {
   dollarRateMargin: 20,
   sectionsOrder: ["sale", "refurbished", "tradein", "featured", "features"],
   categories: ["iPhones", "MacBook", "iPad", "AirPods"],
-  heroProductIds: [2, 1, 4, 18],
+  heroProductIds: [2, 1],
   tradeIn: {
     enabled: true,
     batteryConditions: ["+90%", "75-90%", "Menos del 75%", "No lo sé"],
@@ -308,61 +308,6 @@ const PRODUCTOS = [
     },
     inTheBox: [
       "iPhone 16",
-      "Cable de carga USB-C (1 m)",
-      "Documentación y calcomanías"
-    ]
-  },
-  {
-    id: 4,
-    name: "iPhone 15 Pro",
-    description: "Titanio. Tan fuerte, tan ligero, tan Pro. Chip A17 Pro, cámara de 48 Mpx y Dynamic Island.",
-    price: 899,
-    originalPrice: 999,
-    discountPercentage: 10,
-    category: "iPhones",
-    stock: 5,
-    isNew: true,
-    isOnSale: true,
-    chip: "A17 Pro",
-    colors: ["Natural Titanium", "Blue Titanium"],
-    storageCapacity: "128GB",
-    hasAppleWarranty: true,
-    image: IMG.iphones + "/15pro-naturaltitanium.png",
-    imageGallery: {
-      "Natural Titanium": IMG.iphones + "/15pro-naturaltitanium.png",
-      "Blue Titanium": IMG.iphones + "/15pro-bluetitanium.png"
-    },
-    storageOptions: [
-      { label: "128 GB", price: 0 },
-      { label: "256 GB", price: 130 },
-      { label: "512 GB", price: 280 }
-    ],
-    highlights: [
-      "Titanio grado aeroespacial con acabado cepillado.",
-      "Chip A17 Pro para gaming y apps profesionales.",
-      "Cámara de 48 Mpx con zoom óptico 3x.",
-      "Dynamic Island y Always-On.",
-      "USB-C 3.0 de altísima velocidad.",
-      "Promoción: precio rebajado por tiempo limitado."
-    ],
-    specs: {
-      "Pantalla": "OLED Super Retina XDR de 6,1\" con ProMotion (120 Hz)",
-      "Resolución": "2.556 × 1.179 px · 460 ppp",
-      "Chip": "A17 Pro con GPU de 6 núcleos",
-      "Memoria": "8 GB de RAM",
-      "Cámara": "Principal de 48 Mpx + Ultra Gran Angular + telefoto 3x",
-      "Cámara frontal": "TrueDepth de 12 Mpx con Face ID",
-      "Video": "4K Dolby Vision hasta 60 fps · Modo Cine",
-      "Batería": "Hasta 23 horas de reproducción de video",
-      "Carga": "USB-C 3.0 · MagSafe · Qi",
-      "Peso": "187 g",
-      "Dimensiones": "146,6 × 70,6 × 8,25 mm",
-      "Material": "Titanio · Ceramic Shield · IP68",
-      "Conectividad": "5G · Wi-Fi 6E · Bluetooth 5.3 · NFC",
-      "Garantía": "Garantía oficial de Apple"
-    },
-    inTheBox: [
-      "iPhone 15 Pro",
       "Cable de carga USB-C (1 m)",
       "Documentación y calcomanías"
     ]

@@ -191,6 +191,14 @@ function iniciarBuscador() {
       const abierto = movil.classList.toggle("open");
       burger.setAttribute("aria-expanded", abierto);
     });
+    // cerrar el menú al tocar cualquier enlace interno
+    $$("a", movil).forEach((a) =>
+      a.addEventListener("click", () => {
+        movil.classList.remove("open");
+        burger.setAttribute("aria-expanded", "false");
+        burger.focus({ preventScroll: true });
+      })
+    );
   }
 }
 
@@ -313,8 +321,6 @@ function pintarHome() {
   const bestSellers = PRODUCTOS.filter((p) => p.isBestSeller);
   const onSale = PRODUCTOS.filter((p) => p.isOnSale);
   const refurb = PRODUCTOS.filter((p) => p.condition === "refurbished");
-
-  pintarHero();
 
   renderLista(fr("[data-contenido-ofertas]"), onSale,
     "No hay productos en oferta actualmente.");
@@ -857,6 +863,8 @@ function iniciar() {
   const home = $("[data-contenido-ofertas]");
   if (home) pintarHome();
 
+  if ($("[data-hero-rot]")) pintarHero();
+
   if ($("[data-resultados]")) pintarProductos();
 
   if ($("[data-detalle]")) pintarProducto();
@@ -865,14 +873,27 @@ function iniciar() {
   if (canjeHome) mountCanje(canjeHome, { variant: "home" });
 
   // link "Plan Canje" en el navbar: si estamos en Inicio, scroll suave
+  // y marca la píldora activa en el link correspondiente (evita que
+  // quede trabada en "Inicio" al navegar a la sección).
+  const marcarPlanActivo = () => {
+    $$(".nav-link, [data-nav-mobile] a").forEach((el) => {
+      const esPlan = (el.getAttribute("href") || "").indexOf("plan-canje") !== -1;
+      el.classList.toggle("active", esPlan);
+    });
+  };
   $$("[data-plan-link]").forEach((a) =>
     a.addEventListener("click", (e) => {
       if (a.getAttribute("href").indexOf("plan-canje") !== -1) {
         const sec = document.getElementById("plan-canje");
-        if (sec) { e.preventDefault(); sec.scrollIntoView({ behavior: "smooth", block: "start" }); }
+        if (sec) {
+          e.preventDefault();
+          marcarPlanActivo();
+          sec.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       }
     })
   );
+  if ((location.hash || "").indexOf("plan-canje") !== -1) marcarPlanActivo();
 
   if (!sessionStorage.getItem("dolar")) cargarDolar();
 }
